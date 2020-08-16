@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:fluuter_front_end/Services/auth.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _nameController = TextEditingController();
+
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  //bool _isLogin = false;
+
+  // void registerAction({String name, String email, String password}) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +49,7 @@ class RegisterPage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: _nameController,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -48,6 +66,7 @@ class RegisterPage extends StatelessWidget {
                       height: 30,
                     ),
                     TextFormField(
+                      controller: _emailController,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -64,6 +83,7 @@ class RegisterPage extends StatelessWidget {
                       height: 30,
                     ),
                     TextFormField(
+                      controller: _passwordController,
                       obscureText: true,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -80,8 +100,11 @@ class RegisterPage extends StatelessWidget {
                     RaisedButton(
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
+                          signUp(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
                         }
                       },
                       child: Text('Submit'),
