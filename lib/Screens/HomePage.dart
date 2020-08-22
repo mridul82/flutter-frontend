@@ -4,10 +4,18 @@ import 'RegisterPage.dart';
 
 class HomePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _showScaffold(String s) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(s),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Home'),
       ),
@@ -67,8 +75,8 @@ class HomePage extends StatelessWidget {
                     RaisedButton(
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
+                          print('a');
+                          _showScaffold("Login Button Pressed");
                         }
                       },
                       child: Text('Submit'),

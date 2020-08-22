@@ -8,6 +8,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _nameController = TextEditingController();
 
@@ -19,9 +20,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // void registerAction({String name, String email, String password}) {}
 
+  void _showScaffold(String s) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(s),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Register'),
       ),
@@ -98,13 +106,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           )),
                     ),
                     RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
-                          signUp(
+                          final registerResponse = await signUp(
                             name: _nameController.text,
                             email: _emailController.text,
                             password: _passwordController.text,
                           );
+
+                          //print(registerResponse);
+                          if (registerResponse != null) {
+                            _formKey.currentState.reset();
+                            _showScaffold("Data Register Sucessfully!!");
+                          }
                         }
                       },
                       child: Text('Submit'),
