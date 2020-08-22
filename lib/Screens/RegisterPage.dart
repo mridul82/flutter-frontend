@@ -114,10 +114,14 @@ class _RegisterPageState extends State<RegisterPage> {
                             password: _passwordController.text,
                           );
 
-                          //print(registerResponse);
-                          if (registerResponse != null) {
+                          print(registerResponse);
+                          if (registerResponse == 200) {
                             _formKey.currentState.reset();
                             _showScaffold("Data Register Sucessfully!!");
+                          } else if ((registerResponse == 400)) {
+                            _showScaffold("Data already registred");
+                          } else {
+                            _showScaffold("error");
                           }
                         }
                       },
