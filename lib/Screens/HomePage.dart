@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluuter_front_end/Screens/Dashboard.dart';
+import 'package:fluuter_front_end/Services/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'RegisterPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
   final _formKey = GlobalKey<FormState>();
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _showScaffold(String s) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(s),
-    ));
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  void checkLoginStatus() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString("token") != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => Dashboard()),
+          (Route<dynamic> route) => false);
+    }
   }
 
   @override
@@ -43,6 +64,7 @@ class HomePage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: _emailController,
                       validator: (value) {
                         if (value.isEmpty) {
                           return 'Please enter some text';
@@ -59,6 +81,7 @@ class HomePage extends StatelessWidget {
                       height: 30,
                     ),
                     TextFormField(
+                      controller: _passwordController,
                       obscureText: true,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -73,10 +96,24 @@ class HomePage extends StatelessWidget {
                           )),
                     ),
                     RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
-                          print('a');
-                          _showScaffold("Login Button Pressed");
+                          final loginResponse = await signIn(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+                          // _showScaffold("Login Button Pressed");
+                          print(loginResponse);
+                          if (loginResponse == 200) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Dashboard(),
+                                ),
+                                (route) => false);
+                          }
+                          // SharedPreferences prefs =
+                          //     await SharedPreferences.getInstance();
+                          // prefs.setString('token', token);
                         }
                       },
                       child: Text('Submit'),
