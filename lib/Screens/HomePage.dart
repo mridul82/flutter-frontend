@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluuter_front_end/Screens/Dashboard.dart';
+import 'package:fluuter_front_end/Screens/LoginWithPhone.dart';
 import 'package:fluuter_front_end/Services/auth.dart';
+// import 'package:fluuter_front_end/Services/phone_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
+
 import 'RegisterPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -151,6 +154,24 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginWithPhone(),
+                        ),
+                      );
+                    },
+                    textColor: Colors.black,
+                    padding: EdgeInsets.all(0.0),
+                    child: Text(
+                      'Login with Phone',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

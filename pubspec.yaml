@@ -25,6 +25,12 @@ dependencies:
     sdk: flutter
   http:
   shared_preferences: ^0.5.10
+
+  intl: ^0.16.1
+  firebase_core: ^0.7.0
+  firebase_auth: ^0.20.0+1
+  path_provider: ^1.6.7
+  provider: ^4.0.5+1
   
 
 
